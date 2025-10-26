@@ -1,0 +1,34 @@
+{
+  "name": "keystone",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hosted digital estate management system",
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "build:all": "pnpm install && pnpm typecheck && pnpm lint && pnpm test && pnpm build",
+    "typecheck": "pnpm -r run typecheck",
+    "lint": "pnpm -r run lint",
+    "test": "pnpm -r run test",
+    "test:ui": "pnpm -r run test:ui",
+    "playwright": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "eslint": "^9.15.0",
+    "eslint-plugin-svelte": "^2.46.1",
+    "globals": "^16.4.0",
+    "playwright": "^1.48.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-svelte": "^3.2.8",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}
