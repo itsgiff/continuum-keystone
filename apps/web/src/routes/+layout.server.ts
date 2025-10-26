@@ -1,4 +1,5 @@
 import type { LayoutServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
 
 export const load: LayoutServerLoad = async ({ fetch, url }) => {
   // Try to get current user
@@ -18,10 +19,7 @@ export const load: LayoutServerLoad = async ({ fetch, url }) => {
   // Redirect to login if accessing protected routes
   const protectedRoutes = ['/dashboard', '/'];
   if (protectedRoutes.includes(url.pathname)) {
-    return {
-      user: null,
-      redirect: '/login',
-    };
+    throw redirect(303, '/login');
   }
 
   return { user: null };

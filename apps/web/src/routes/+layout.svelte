@@ -3,6 +3,7 @@
   import { currentUser } from '$lib/stores';
   import { authApi } from '$lib/api';
   import { onMount } from 'svelte';
+  import { goto, invalidateAll } from '$app/navigation';
 
   let { data, children } = $props();
 
@@ -16,7 +17,8 @@
     try {
       await authApi.logout();
       currentUser.set(null);
-      window.location.href = '/login';
+      await invalidateAll(); // Invalidate all load functions
+      await goto('/login');
     } catch (error) {
       console.error('Logout failed:', error);
     }
