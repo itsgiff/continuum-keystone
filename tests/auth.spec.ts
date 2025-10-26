@@ -23,7 +23,7 @@ test.describe('Authentication Flow', () => {
 
     // Should redirect to dashboard after registration
     await expect(page).toHaveURL('/dashboard');
-    await expect(page.locator(`text=Welcome, ${testUser.name}`)).toBeVisible();
+    await expect(page.getByRole('heading', { name: new RegExp(`Welcome, ${testUser.name}`) })).toBeVisible();
 
     // Logout
     await page.click('button:has-text("Logout")');
@@ -36,7 +36,7 @@ test.describe('Authentication Flow', () => {
 
     // Should be back at dashboard
     await expect(page).toHaveURL('/dashboard');
-    await expect(page.locator(`text=Welcome, ${testUser.name}`)).toBeVisible();
+    await expect(page.getByRole('heading', { name: new RegExp(`Welcome, ${testUser.name}`) })).toBeVisible();
 
     // Verify dashboard content
     await expect(page.locator('text=Assets')).toBeVisible();
