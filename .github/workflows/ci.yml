@@ -50,6 +50,7 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @keystone/api db:migrate
       - run: pnpm test
 
   e2e:
@@ -66,6 +67,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps
+      - run: pnpm --filter @keystone/api db:migrate
       - run: pnpm playwright
         env:
           CI: true
