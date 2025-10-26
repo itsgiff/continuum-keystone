@@ -108,8 +108,14 @@ export async function authRoutes(fastify: FastifyInstance) {
       await db.delete(schema.sessions).where(eq(schema.sessions.userId, userId));
     }
 
-    request.session.destroy();
-    reply.send({ message: 'Logged out successfully' });
+    // Destroy session - must use callback pattern
+    request.session.destroy((err) => {
+      if (err) {
+        reply.status(500).send({ message: 'Failed to logout' });
+      } else {
+        reply.send({ message: 'Logged out successfully' });
+      }
+    });
   });
 
   // Get current user
