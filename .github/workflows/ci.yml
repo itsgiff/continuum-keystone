@@ -66,6 +66,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps
+      - run: pnpm --filter @keystone/api run db:migrate
       - run: pnpm playwright
         env:
           CI: true
