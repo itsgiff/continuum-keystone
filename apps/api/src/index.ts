@@ -5,6 +5,34 @@ import session from '@fastify/session';
 import { authRoutes } from './auth/routes.js';
 import { setupErrorHandler } from './utils/errors.js';
 import { logger } from './utils/logger.js';
+import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
+import Database from 'better-sqlite3';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
+import { mkdir } from 'fs/promises';
+import { dirname } from 'path';
+
+// Run migrations in CI/test environments
+async function runMigrations() {
+  const databaseUrl = process.env.DATABASE_URL || 'file:./data/keystone.db';
+  const dbPath = databaseUrl.replace('file:', '');
+
+  // Ensure data directory exists
+  await mkdir(dirname(dbPath), { recursive: true });
+
+  const sqlite = new Database(dbPath);
+  const db = drizzle(sqlite);
+
+  logger.info('Running database migrations...');
+  migrate(db, { migrationsFolder: './src/db/migrations' });
+  logger.info('Database migrations complete!');
+
+  sqlite.close();
+}
+
+// Auto-run migrations in CI or when explicitly enabled
+if (process.env.CI === 'true' || process.env.RUN_MIGRATIONS === 'true') {
+  await runMigrations();
+}
 
 const fastify = Fastify({
   logger: false, // Using custom logger
